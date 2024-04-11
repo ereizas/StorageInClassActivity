@@ -2,6 +2,7 @@ package com.example.networkapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         showButton.setOnClickListener {
             downloadComic(numberEditText.text.toString())
         }
+        loadComic()
 
     }
 
@@ -86,5 +88,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun loadComic(){
+        if(file.exists())
+        {
+            try{
+                val br = BufferedReader(FileReader(file))
+                val text = StringBuilder()
+                var line : String?
+                while(br.readLine().also{line=it}!=null){
+                    text.append(line)
+                }
+                br.close()
+                showComic(JSONObject(text.toString()))
+            }
+            catch(e: IOException){
+                e.printStackTrace()
+            }
+        }
+    }
 
 }
